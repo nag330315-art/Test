@@ -22,30 +22,30 @@ jobs:
       - name: Create minimal Xcode project (Test.xcodeproj)
         run: |
           cat > make_project.rb <<'RUBY'
-          require 'xcodeproj'
-          project_path = 'Test.xcodeproj'
-          project = Xcodeproj::Project.new(project_path)
-          target = project.new_target(:application, 'Test', :ios, '13.0')
-          plist_path = 'Info.plist'
-          unless File.exist?(plist_path)
-            File.write(plist_path, <<~PLIST)
-              <?xml version="1.0" encoding="UTF-8"?>
-              <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-              <plist version="1.0">
-              <dict>
-                <key>CFBundleIdentifier</key>
-                <string>com.example.Test</string>
-                <key>CFBundleName</key>
-                <string>Test</string>
-              </dict>
-              </plist>
-            PLIST
-          end
-          resources = target.resources_build_phase
-          resources.add_file_reference(project.new_file(plist_path))
-          project.save
-          puts "Created #{project_path}"
-          RUBY
+require 'xcodeproj'
+project_path = 'Test.xcodeproj'
+project = Xcodeproj::Project.new(project_path)
+target = project.new_target(:application, 'Test', :ios, '13.0')
+plist_path = 'Info.plist'
+unless File.exist?(plist_path)
+  File.write(plist_path, <<~PLIST)
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>CFBundleIdentifier</key>
+  <string>com.example.Test</string>
+  <key>CFBundleName</key>
+  <string>Test</string>
+</dict>
+</plist>
+PLIST
+end
+resources = target.resources_build_phase
+resources.add_file_reference(project.new_file(plist_path))
+project.save
+puts "Created #{project_path}"
+RUBY
           ruby make_project.rb
           ls -la Test.xcodeproj || true
 
