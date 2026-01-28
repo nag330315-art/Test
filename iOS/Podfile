@@ -1,10 +1,31 @@
 platform :ios, '13.0'
 use_frameworks!
 
-# ← ここを追加：GitHub Actions が .xcodeproj を確実に認識できるようにする
+# .xcodeproj の明示（作業ディレクトリが iOS の場合は相対でOK）
 project 'PJDREAM.xcodeproj'
 
-target 'PJDREAM' do
-  # 必要なPodがあればここに書く
-  # 例）pod 'Alamofire'
+# 共有のPodをまとめたいときは function で共通化
+def shared_pods
+  pod 'Alamofire', '~> 5.8'   # ← 例。必要に応じて変更/追加
+end
+
+# 実在するターゲット名に合わせて target ブロックを定義
+target 'Production' do
+  shared_pods
+end
+
+target 'Staging' do
+  shared_pods
+end
+
+target 'TRMUAT03' do
+  shared_pods
+end
+
+target 'TRMUAT' do
+  shared_pods
+end
+
+target 'UAT' do
+  shared_pods
 end
