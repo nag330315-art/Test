@@ -1,6 +1,8 @@
 platform :ios, '13.0'
 use_frameworks!
 
+project 'Test.xcodeproj'
+
 # 注意: この Podfile はリポジトリのルートに配置されます。
 # ターゲット名が Xcode プロジェクトのターゲット名と一致していることを確認してください。
 # 例: target 'Test' do ... end
