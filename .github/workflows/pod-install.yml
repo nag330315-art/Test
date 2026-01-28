@@ -1,0 +1,44 @@
+name: Pod install (macOS)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pod-install:
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: iOS   # ← ここがあなたの場合は「iOS」で正解
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install CocoaPods
+        run: |
+          gem install cocoapods --no-document
+          pod --version
+
+      - name: Run pod install
+        run: pod install --no-repo-update
+
+      - name: Commit Podfile.lock if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git.config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain | grep 'Podfile.lock')" ]; then
+            git add Podfile.lock
+            git commit -m "Add Podfile.lock via GitHub Actions"
+            git push
+          else
+            echo "No changes found"
+          fi
+
+      - name: Show files (debug)
+        run: |
+          pwd
+          ls -la
