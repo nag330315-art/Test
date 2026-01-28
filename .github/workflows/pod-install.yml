@@ -26,17 +26,21 @@ jobs:
       - name: Run pod install
         run: pod install --no-repo-update
 
+      
       - name: Commit Podfile.lock if changed
         run: |
           git config user.name  "github-actions[bot]"
-          git.config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain | grep 'Podfile.lock')" ]; then
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      
+          # Podfile.lock に変更があるかを判定（あるときだけコミット）
+          if git status --porcelain | grep -q 'Podfile.lock'; then
             git add Podfile.lock
-            git commit -m "Add Podfile.lock via GitHub Actions"
+            git commit -m "Add/Update Podfile.lock via GitHub Actions"
             git push
           else
-            echo "No changes found"
+            echo "No changes to Podfile.lock."
           fi
+
 
       - name: Show files (debug)
         run: |
