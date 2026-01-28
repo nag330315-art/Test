@@ -15,12 +15,15 @@ jobs:
 
       - name: Install Ruby gems
         run: |
+          set -e
           gem install xcodeproj --no-document
           gem install cocoapods --no-document
           pod --version
 
       - name: Create minimal Xcode project (Test.xcodeproj)
+        shell: bash
         run: |
+          set -e
           cat > make_project.rb <<'RUBY'
 require 'xcodeproj'
 project_path = 'Test.xcodeproj'
@@ -60,6 +63,7 @@ RUBY
 
       - name: Run pod install
         run: |
+          set -e
           pod install --repo-update
           ls -la
 
