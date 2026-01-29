@@ -1,15 +1,40 @@
-platform :ios, '13.0'
+platform :ios, '11.0'
 use_frameworks!
 
-# .xcodeproj の明示（作業ディレクトリが iOS の場合は相対でOK）
+# 対象の Xcode プロジェクトを明示
 project 'PJDREAM.xcodeproj'
 
-# 共有のPodをまとめたいときは function で共通化
+# =========================
+# 共通で使う Pod 定義
+# =========================
 def shared_pods
-  pod 'Alamofire', '~> 5.8'   # ← 例。必要に応じて変更/追加
+  # UI / Utility
+  pod 'IQKeyboardManager'
+  pod 'Alamofire'
+  pod 'SwiftyJSON'
+  pod 'SwiftKeychainWrapper'
+  pod 'DropDown'
+  pod 'ZVProgressHUD', '~> 2.6.0'
+
+  # Image / UI
+  pod 'Kingfisher', '~> 5.15.8'
+  pod 'Localize-Swift'
+  pod 'MXSegmentedControl'
+
+  # AWS
+  pod 'Amplify'
+  pod 'AmplifyPlugins/AWSCognitoAuthPlugin'
+
+  # Image Crop
+  pod 'CropViewController'
+
+  # Local DB
+  pod 'MagicalRecord'
 end
 
-# 実在するターゲット名に合わせて target ブロックを定義
+# =========================
+# 実在するターゲットごとに適用
+# =========================
 target 'Production' do
   shared_pods
 end
